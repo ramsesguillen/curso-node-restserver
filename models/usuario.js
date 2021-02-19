@@ -22,6 +22,7 @@ const UsuarioSchema = new Schema({
     rol: {
         type: String,
         required: true,
+        default: 'USER_ROLE',
         enum: ['ADMIN_ROLE', 'USER_ROLE']
     },
     estado: {
@@ -36,8 +37,11 @@ const UsuarioSchema = new Schema({
 
 // Eliminar el password del objeto
 UsuarioSchema.methods.toJSON = function() {
-    const { __v, password, ...usuario } = this.toObject();
-    return usuario;
+    const { _id, __v, password, ...usuario } = this.toObject();
+    return {
+        ...usuario,
+        uid: _id
+    };
 }
 
 // *el mobre del modelo es en singlular - pero mongoose le agrega una "s" en la coleccion
