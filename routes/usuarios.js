@@ -13,7 +13,8 @@ const {
     validarCampos,
     esAdminRol,
     tieneRole,
-    validarJWT
+    validarJWT,
+    validarObjectId,
 } = require('../middlewares');
 
 const {
@@ -45,7 +46,8 @@ router.post('/', [
 ], usuariosPost );
 
 router.put('/:id', [
-    check('id', 'No es un id valido').isMongoId(),
+    validarObjectId,
+    // check('id', 'No es un id valido').isMongoId(),
     check('id').custom( existeUsuarioId ),
     check('rol').custom( esRoleValido ),
     validarCampos
@@ -54,7 +56,7 @@ router.put('/:id', [
 router.delete('/:id',[
     validarJWT,
     // esAdminRol,
-    tieneRole('USER_ROLE', 'VENTAS_ROLE'),
+    tieneRole('ADMIN_ROLE', 'VENTAS_ROLE'),
     check('id', 'No es un id valido').isMongoId(),
     check('id').custom( existeUsuarioId ),
     validarCampos
@@ -65,3 +67,4 @@ router.delete('/:id',[
 
 
 module.exports = router;
+
