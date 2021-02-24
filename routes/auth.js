@@ -2,8 +2,9 @@
 const express = require('express');
 const { check } = require('express-validator');
 
-const { login, googleSinging } = require('../controllers/auth');
+const { login, googleSinging, renovarToken } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = express.Router();
 
@@ -23,6 +24,8 @@ router.post('/google',[
     validarCampos
 ], googleSinging );
 
+
+router.get('/', validarJWT, renovarToken );
 
 
 

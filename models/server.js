@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
+const { socketController } = require('../sockets/controller');
 
 
 class Server {
@@ -9,6 +10,11 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+
+        this.server = require('http').createServer( this.app );
+        this.io = require('socket.io')(this.server);
+
+
         this.paths = {
             auth: '/api/auth',
             buscar: '/api/buscar',
@@ -26,6 +32,9 @@ class Server {
 
         // Rutas de mi aplicación
         this.routes();
+
+        // Sockets
+        this.sockets();
     }
 
 
@@ -64,8 +73,13 @@ class Server {
     }
 
 
+    sockets() {
+        this.io.on("connection", ( socket ) => socketController( socket, this.io) );
+    }
+
+
     listen() {
-        this.app.listen( this.port, () => {
+        this.server.listen( this.port, () => {
             console.log('Servidor corriendo en puerto', this.port )
         });
     }

@@ -6,55 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-signin-client_id" content="328452957577-sc5g8o5j57k91rcf34in9ku1uas5r6f3.apps.googleusercontent.com">
     <title>Google Singin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
 
-    <h1>Google Singin</h1>
-    <hr>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-sm-6">
+                <h1>Google Singin</h1>
+                <hr>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <a href="#" onclick="signOut();">Sign out</a>
+                <!-- <img src="http://localhost:4000/api/uploads/productos/60315d470c1e1632703b46e0" alt=""> -->
+                <!-- <img src="http://localhost:4000/api/uploads/productos/60315d670c1e1632703b46e1" alt=""> -->
+            </div>
+            <div class="col-md-6">
+                <h1>Login Manual</h1>
+                <hr>
+                <form class="d-grid">
+                    <input type="text" name="correo" class="form-control mb-2" placeholder="Correo">
+                    <input type="password" name="password" class="form-control mb-2" placeholder="Password">
 
-    <a href="#" onclick="signOut();">Sign out</a>
-
-    <!-- <img src="http://localhost:4000/api/uploads/productos/60315d470c1e1632703b46e0" alt=""> -->
-    <!-- <img src="http://localhost:4000/api/uploads/productos/60315d670c1e1632703b46e1" alt=""> -->
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Ingresar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <script>
-
-        var url = ( window.location.hostname.includes('localhost') )
-                        ? 'http://localhost:4000/api/auth/google'
-                        :  'http://www.urlproduccion.com/api/auth/google';
-
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-            var id_token = googleUser.getAuthResponse().id_token;
-
-            fetch( url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify( { id_token } )
-            })
-            .then( resp => {
-                return resp.json();
-            })
-            .then( data => {
-                console.log( data);
-            })
-            .catch(console.log);
-        }
-
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
-    </script>
+    <script src="./js/auth.js"></script>
 </body>
 </html>
